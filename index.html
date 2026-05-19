@@ -382,6 +382,141 @@
     .footer-col ul li a:hover { color: rgba(255,255,255,.78); }
     .footer-bottom { border-top: 1px solid var(--glass-border); padding-top: 1.8rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
     .footer-bottom p { font-size: .82rem; color: rgba(255,255,255,.22); }
+
+    /* ===== SECTION TAG (chip antes do h2) ===== */
+    .section-tag {
+      display: inline-flex; align-items: center; gap: .6rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .72rem; letter-spacing: .25em; text-transform: uppercase;
+      color: var(--green); margin-bottom: 1.1rem;
+    }
+    .section-tag::before {
+      content: ''; width: 22px; height: 1.5px; background: var(--green);
+    }
+    .section-tag.center { justify-content: center; }
+    .section-tag.center::before { display: none; }
+    .section-tag.center::after  { content:''; width: 22px; height: 1.5px; background: var(--green); margin-left: .6rem; }
+    .section-tag.center::before { content:''; display: inline-block; width: 22px; height: 1.5px; background: var(--green); margin-right: 0; }
+    .header-center { text-align: center; }
+
+    /* ===== STEPS — ajuste para 4 etapas ===== */
+    @media (min-width: 769px) {
+      .steps-wrapper.steps-4 .step:not(:last-child)::after { top: 2.4rem; }
+    }
+    @media (max-width: 900px) and (min-width: 769px) {
+      .steps-wrapper.steps-4 { flex-wrap: wrap; gap: 2.5rem 0; }
+      .steps-wrapper.steps-4 .step { flex: 0 0 50%; }
+      .steps-wrapper.steps-4 .step:nth-child(2)::after { display: none; }
+    }
+
+    /* ===== UNIVERSO ===== */
+    #universo {
+      padding: 7rem 0;
+      background: radial-gradient(ellipse at 50% 50%, rgba(168,85,247,.05) 0%, transparent 70%);
+      overflow: hidden;
+    }
+    .universe-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(2rem, 5vw, 3.4rem); text-align: center; line-height: 1.05; margin-bottom: 1rem; }
+    .universe-title em { font-style: normal; background: linear-gradient(90deg, var(--green), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .universe-sub { text-align: center; max-width: 560px; margin: 0 auto 3.5rem; color: rgba(255,255,255,.55); font-size: 1rem; line-height: 1.7; }
+
+    .universe-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      grid-template-rows: 280px 280px;
+      gap: 1rem;
+    }
+    .universe-cell { position: relative; border-radius: 18px; overflow: hidden; border: 1px solid var(--glass-border); cursor: none; }
+    .universe-cell img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .8s ease; }
+    .universe-cell:hover img { transform: scale(1.06); }
+    .universe-cell::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(180deg, transparent 50%, rgba(5,5,16,.85) 100%);
+      pointer-events: none;
+    }
+    .universe-cell .cell-label {
+      position: absolute; left: 1.2rem; bottom: 1.1rem; z-index: 1;
+      font-family: 'Syne', sans-serif; font-weight: 700; font-size: .95rem; color: #fff;
+    }
+    .universe-cell .cell-label span { display: block; font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: .75rem; color: var(--green); margin-top: .15rem; letter-spacing: .1em; text-transform: uppercase; }
+    .universe-cell.large { grid-row: 1 / 3; }
+
+    @media (max-width: 768px) {
+      .universe-grid { grid-template-columns: 1fr; grid-template-rows: repeat(3, 220px); }
+      .universe-cell.large { grid-row: auto; }
+    }
+
+    /* ===== PRICING ===== */
+    #pricing { padding: 7rem 0; }
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+    @media (max-width: 900px) { .pricing-grid { grid-template-columns: 1fr; max-width: 460px; margin: 1rem auto 0; } }
+
+    .price-card {
+      position: relative;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 22px;
+      padding: 2.2rem 1.8rem 2rem;
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      display: flex; flex-direction: column;
+      transition: transform .3s, border-color .3s, box-shadow .3s;
+    }
+    .price-card:hover { transform: translateY(-6px); border-color: rgba(0,255,135,.4); }
+    .price-card.hot {
+      border-color: var(--green);
+      background: linear-gradient(180deg, rgba(0,255,135,.07), rgba(168,85,247,.05));
+      box-shadow: 0 0 32px rgba(0,255,135,.18), 0 0 60px rgba(168,85,247,.12);
+      transform: translateY(-12px);
+    }
+    .price-card.hot:hover { transform: translateY(-16px); }
+
+    .price-badge {
+      align-self: flex-start;
+      font-family: 'DM Sans', sans-serif; font-size: .7rem; letter-spacing: .2em; text-transform: uppercase;
+      padding: .35rem .8rem; border-radius: 50px;
+      background: var(--glass-border); color: rgba(255,255,255,.7);
+      margin-bottom: 1.3rem;
+    }
+    .price-card.hot .price-badge { background: linear-gradient(90deg, var(--green), var(--purple)); color: #050510; font-weight: 500; }
+    .price-name { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.45rem; letter-spacing: .04em; margin-bottom: .6rem; }
+    .price-desc { font-size: .88rem; color: rgba(255,255,255,.5); line-height: 1.55; margin-bottom: 1.6rem; min-height: 2.7em; }
+    .price-val {
+      font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1rem;
+      color: rgba(255,255,255,.65); margin-bottom: .3rem;
+    }
+    .price-val span {
+      font-size: 2.6rem; color: #fff; margin-left: .25rem;
+      background: linear-gradient(90deg, var(--green), var(--purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .price-note { font-size: .78rem; color: rgba(255,255,255,.4); margin-bottom: 1.5rem; }
+    .price-list { list-style: none; padding: 0; margin: 0 0 1.8rem; display: flex; flex-direction: column; gap: .55rem; flex: 1; }
+    .price-list li {
+      font-size: .87rem; color: rgba(255,255,255,.75); display: flex; align-items: flex-start; gap: .55rem; line-height: 1.45;
+    }
+    .price-list li::before {
+      content: ''; flex-shrink: 0; width: 14px; height: 14px;
+      border: 1.5px solid var(--green); border-radius: 50%;
+      background: radial-gradient(circle, var(--green) 0%, var(--green) 30%, transparent 32%);
+      margin-top: .15rem;
+    }
+    .btn-price {
+      display: inline-block; text-align: center;
+      font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: .92rem;
+      padding: .85rem 1.4rem; border-radius: 50px; cursor: none; text-decoration: none;
+      border: 1px solid var(--glass-border); color: #fff; background: var(--glass);
+      transition: background .2s, border-color .2s, box-shadow .2s;
+    }
+    .btn-price:hover { border-color: var(--green); background: rgba(0,255,135,.08); }
+    .price-card.hot .btn-price {
+      background: linear-gradient(90deg, var(--green), var(--purple));
+      color: #050510; border-color: transparent; font-weight: 500;
+    }
+    .price-card.hot .btn-price:hover { box-shadow: 0 0 26px rgba(0,255,135,.35), 0 0 50px rgba(168,85,247,.18); }
   </style>
 </head>
 <body>
@@ -396,9 +531,9 @@
     <a href="#hero" class="nav-logo">MEZZETTI</a>
     <ul class="nav-links" id="nav-links">
       <li><a href="#services">Serviços</a></li>
+      <li><a href="#universo">Universo</a></li>
       <li><a href="#portfolio">Portfólio</a></li>
-      <li><a href="#how-it-works">Como Funciona</a></li>
-      <li><a href="#testimonials">Depoimentos</a></li>
+      <li><a href="#pricing">Preços</a></li>
       <li><a href="#cta" class="btn-nav">Comece Agora</a></li>
     </ul>
     <button class="hamburger" id="hamburger" aria-label="Menu">
@@ -434,6 +569,7 @@
 <!-- SERVICES -->
 <section id="services">
   <div class="container">
+    <div class="header-center reveal"><span class="section-tag center">O que fazemos</span></div>
     <h2 class="section-title reveal">O que criamos</h2>
     <p class="section-sub reveal">Soluções digitais completas, do conceito à entrega</p>
     <div class="services-grid">
@@ -507,23 +643,29 @@
 <!-- HOW IT WORKS -->
 <section id="how-it-works">
   <div class="container">
-    <h2 class="section-title reveal">Simples assim</h2>
-    <p class="section-sub reveal">Três etapas. Um resultado extraordinário.</p>
-    <div class="steps-wrapper">
+    <div class="header-center reveal"><span class="section-tag center">Como trabalhamos</span></div>
+    <h2 class="section-title reveal">Do briefing ao lançamento</h2>
+    <p class="section-sub reveal">Quatro etapas, zero surpresas.</p>
+    <div class="steps-wrapper steps-4">
       <div class="step reveal">
         <div class="step-number">01</div>
         <div class="step-title">Briefing</div>
-        <p class="step-desc">Nos conta sua ideia, objetivos e referências. Quanto mais contexto, melhor o resultado.</p>
+        <p class="step-desc">Entendemos seus objetivos, público e referências — tudo pra navegar na direção certa.</p>
       </div>
       <div class="step reveal">
         <div class="step-number">02</div>
-        <div class="step-title">Criação</div>
-        <p class="step-desc">Nossa equipe desenvolve com atenção a cada detalhe, iterando com você ao longo do processo.</p>
+        <div class="step-title">Design</div>
+        <p class="step-desc">Criamos os protótipos no Figma. Você aprova antes de qualquer linha de código.</p>
       </div>
       <div class="step reveal">
         <div class="step-number">03</div>
-        <div class="step-title">Entrega</div>
-        <p class="step-desc">Você recebe algo que supera o esperado — pronto para ir ao ar e impressionar.</p>
+        <div class="step-title">Desenvolvimento</div>
+        <p class="step-desc">Codificamos com foco em performance, responsividade e SEO pra ranquear bem.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-number">04</div>
+        <div class="step-title">Lançamento</div>
+        <p class="step-desc">Publicamos, transferimos os acessos e te treinamos pra gerenciar com autonomia.</p>
       </div>
     </div>
   </div>
@@ -532,6 +674,7 @@
 <!-- PORTFOLIO -->
 <section id="portfolio">
   <div class="container">
+    <div class="header-center reveal"><span class="section-tag center">Portfólio</span></div>
     <h2 class="section-title reveal">Trabalhos recentes</h2>
     <p class="section-sub reveal">Uma seleção do que já criamos</p>
     <div class="portfolio-filters reveal">
@@ -601,9 +744,33 @@
   </div>
 </section>
 
+<!-- UNIVERSO -->
+<section id="universo">
+  <div class="container">
+    <div class="header-center reveal"><span class="section-tag center">Nosso universo</span></div>
+    <h2 class="universe-title reveal">Infinitas <em>possibilidades</em></h2>
+    <p class="universe-sub reveal">Cada projeto é uma galáxia única. Nos inspiramos no cosmos pra criar interfaces que respiram amplitude, profundidade e movimento.</p>
+    <div class="universe-grid reveal">
+      <div class="universe-cell large">
+        <img src="hero-space.jpg" alt="Nebulosa">
+        <div class="cell-label">NGC 3324<span>Nebulosa de Carina · James Webb</span></div>
+      </div>
+      <div class="universe-cell">
+        <img src="portfolio-space.jpg" alt="Galáxias">
+        <div class="cell-label">Arp 273<span>Galáxias em colisão · Hubble</span></div>
+      </div>
+      <div class="universe-cell">
+        <img src="cta-space.jpg" alt="Espiral">
+        <div class="cell-label">NGC 7331<span>Galáxia espiral · James Webb</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- TESTIMONIALS -->
 <section id="testimonials">
   <div class="container">
+    <div class="header-center reveal"><span class="section-tag center">Depoimentos</span></div>
     <h2 class="section-title reveal">O que dizem sobre nós</h2>
     <div class="testimonials-slider reveal" id="testimonials-slider">
       <div class="testimonial-slide active">
@@ -645,10 +812,69 @@
   </div>
 </section>
 
+<!-- PRICING -->
+<section id="pricing">
+  <div class="container">
+    <div class="header-center reveal"><span class="section-tag center">Investimento</span></div>
+    <h2 class="section-title reveal">Planos para cada órbita</h2>
+    <p class="section-sub reveal">Escolha o plano que mais se alinha ao momento do seu projeto.</p>
+    <div class="pricing-grid">
+      <div class="price-card reveal">
+        <span class="price-badge">Starter</span>
+        <h3 class="price-name">ESSENCIAL</h3>
+        <p class="price-desc">Pra quem está começando e precisa de presença online profissional e marcante.</p>
+        <div class="price-val">R$<span>1.200</span></div>
+        <p class="price-note">pagamento único</p>
+        <ul class="price-list">
+          <li>Landing page responsiva</li>
+          <li>Identidade visual básica</li>
+          <li>Formulário de contato</li>
+          <li>SEO básico</li>
+          <li>Entrega em 7 dias</li>
+        </ul>
+        <a href="#cta" class="btn-price">Começar agora</a>
+      </div>
+      <div class="price-card hot reveal">
+        <span class="price-badge">✦ Mais popular</span>
+        <h3 class="price-name">PROFISSIONAL</h3>
+        <p class="price-desc">Site completo pra negócios que querem crescer com autoridade e conversão.</p>
+        <div class="price-val">R$<span>3.800</span></div>
+        <p class="price-note">pagamento único</p>
+        <ul class="price-list">
+          <li>Site com até 8 páginas</li>
+          <li>Identidade visual completa</li>
+          <li>Blog integrado</li>
+          <li>SEO avançado</li>
+          <li>Integração redes sociais</li>
+          <li>Suporte por 30 dias</li>
+        </ul>
+        <a href="#cta" class="btn-price">Escolher plano</a>
+      </div>
+      <div class="price-card reveal">
+        <span class="price-badge">Premium</span>
+        <h3 class="price-name">E-COMMERCE</h3>
+        <p class="price-desc">Loja virtual completa pronta pra vender desde o primeiro dia no ar.</p>
+        <div class="price-val">R$<span>6.500</span></div>
+        <p class="price-note">pagamento único</p>
+        <ul class="price-list">
+          <li>Produtos ilimitados</li>
+          <li>Checkout com Pix e cartão</li>
+          <li>Painel de pedidos</li>
+          <li>Identidade visual completa</li>
+          <li>SEO e performance</li>
+          <li>Suporte por 60 dias</li>
+        </ul>
+        <a href="#cta" class="btn-price">Começar agora</a>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- CTA -->
 <section id="cta">
   <div class="container">
     <div class="cta-content reveal">
+      <div class="header-center reveal" style="margin-bottom:1rem"><span class="section-tag center">Vamos decolar juntos</span></div>
       <h2 class="cta-title">Pronto para criar algo incrível?</h2>
       <p class="cta-sub">Vamos transformar sua ideia em realidade. Entre em contato hoje.</p>
       <a href="mailto:contato@mezzetti.studio" class="btn-cta">
@@ -696,6 +922,8 @@
         <ul>
           <li><a href="#portfolio">Portfólio</a></li>
           <li><a href="#how-it-works">Como Funciona</a></li>
+          <li><a href="#universo">Nosso Universo</a></li>
+          <li><a href="#pricing">Preços</a></li>
           <li><a href="#testimonials">Depoimentos</a></li>
           <li><a href="#cta">Contato</a></li>
         </ul>
