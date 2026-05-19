@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MEZZETTI — Studio Digital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green: #00FF87;
+      --purple: #A855F7;
+      --purple-deep: #6B21A8;
+      --bg: #050510;
+      --glass: rgba(255,255,255,0.04);
+      --glass-border: rgba(255,255,255,0.08);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      background: var(--bg);
+      color: #fff;
+      cursor: none;
+      overflow-x: hidden;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9997;
+      opacity: 0.35;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+    }
+
+    #particles-canvas {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0; pointer-events: none;
+    }
+
+    #cursor-dot {
+      width: 12px; height: 12px;
+      background: var(--green);
+      border-radius: 50%;
+      position: fixed;
+      transform: translate(-50%,-50%);
+      pointer-events: none;
+      z-index: 99999;
+      transition: width .15s, height .15s;
+    }
+    #cursor-ring {
+      width: 36px; height: 36px;
+      border: 2px solid var(--purple);
+      border-radius: 50%;
+      position: fixed;
+      transform: translate(-50%,-50%);
+      pointer-events: none;
+      z-index: 99998;
+      opacity: .6;
+      transition: width .3s, height .3s, border-color .3s;
+    }
+    body.hovering #cursor-ring { width: 60px; height: 60px; border-color: var(--green); }
+    @media (hover: none) { #cursor-dot, #cursor-ring { display: none; } body { cursor: auto; } }
+
+    h1,h2,h3,h4 { font-family: 'Syne', sans-serif; }
+    section { position: relative; z-index: 1; }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      margin-bottom: .75rem;
+      text-align: center;
+    }
+
+    .section-sub {
+      text-align: center;
+      color: rgba(255,255,255,.45);
+      font-size: .95rem;
+      margin-bottom: 3.5rem;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity .65s ease, transform .65s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @keyframes fadeInUp { from { opacity:0; transform:translateY(28px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes gradientShift { 0%,100% { background-position:0% 50%; } 50% { background-position:100% 50%; } }
+    @keyframes pulseDot { 0%,100% { transform:scale(1); opacity:1; } 50% { transform:scale(1.6); opacity:.4; } }
+    @keyframes scrollBounce { 0%,100% { transform:rotate(45deg) translateY(0); opacity:1; } 50% { transform:rotate(45deg) translateY(6px); opacity:.3; } }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 1000;
+      padding: 1.2rem 0;
+      transition: background .3s, backdrop-filter .3s, border-bottom .3s;
+    }
+    nav.scrolled {
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      background: rgba(5,5,16,.82);
+      border-bottom: 1px solid var(--glass-border);
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      max-width: 1200px; margin: 0 auto; padding: 0 2rem;
+    }
+    .nav-logo {
+      font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.5rem;
+      background: linear-gradient(90deg, var(--green), var(--purple));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      text-decoration: none;
+    }
+    .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+    .nav-links a { color: rgba(255,255,255,.65); text-decoration: none; font-size: .93rem; transition: color .2s; }
+    .nav-links a:hover { color: #fff; }
+    .btn-nav {
+      background: linear-gradient(90deg, var(--green), var(--purple));
+      color: #050510 !important; font-weight: 500 !important;
+      padding: .55rem 1.3rem; border-radius: 50px; font-size: .88rem;
+      transition: opacity .2s, box-shadow .2s;
+    }
+    .btn-nav:hover { opacity: .88; box-shadow: 0 0 18px rgba(0,255,135,.3); }
+
+    .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: none; padding: 4px; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: #fff; transition: transform .3s, opacity .3s; }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    @media (max-width: 768px) {
+      .hamburger { display: flex; }
+      .nav-links {
+        display: none; position: fixed; inset: 0; top: 66px;
+        background: rgba(5,5,16,.97); backdrop-filter: blur(20px);
+        flex-direction: column; justify-content: center; align-items: center;
+        gap: 2.5rem; font-size: 1.2rem;
+      }
+      .nav-links.open { display: flex; }
+    }
+
+    /* HERO */
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center; padding: 6rem 2rem 5rem;
+      overflow: hidden;
+      background-image:
+        linear-gradient(180deg, rgba(5,5,16,.55) 0%, rgba(5,5,16,.35) 40%, var(--bg) 100%),
+        url('hero-space.jpg');
+      background-size: cover;
+      background-position: center;
+    }
+    #hero::before {
+      content: ''; position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(5,5,16,.4) 100%),
+        linear-gradient(to bottom, transparent 60%, var(--bg));
+      z-index: 0;
+    }
+    .hero-content { position: relative; z-index: 2; max-width: 820px; }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: var(--glass); border: 1px solid var(--glass-border);
+      border-radius: 50px; padding: .4rem 1.1rem;
+      font-size: .82rem; color: rgba(255,255,255,.6); margin-bottom: 2rem;
+      animation: fadeInUp .7s ease both;
+    }
+    .badge-dot { width: 8px; height: 8px; background: var(--green); border-radius: 50%; animation: pulseDot 2s ease-in-out infinite; }
+
+    .hero-title {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: clamp(2.8rem, 7vw, 5.8rem); line-height: 1.05;
+      margin-bottom: 1rem; animation: fadeInUp .7s ease .18s both;
+    }
+    .hero-gradient {
+      background: linear-gradient(90deg, var(--green), var(--purple), var(--green));
+      background-size: 200% 200%;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      animation: gradientShift 4s ease infinite;
+    }
+    .hero-sub { font-size: clamp(.8rem,1.8vw,.95rem); letter-spacing: .22em; color: rgba(255,255,255,.35); text-transform: uppercase; margin-bottom: 1.4rem; animation: fadeInUp .7s ease .35s both; }
+    .hero-desc { font-size: 1.08rem; color: rgba(255,255,255,.55); max-width: 490px; margin: 0 auto 2.4rem; line-height: 1.72; animation: fadeInUp .7s ease .52s both; }
+
+    .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; animation: fadeInUp .7s ease .68s both; }
+
+    .btn-primary {
+      background: linear-gradient(90deg, var(--green), var(--purple));
+      color: #050510; font-family: 'DM Sans', sans-serif; font-weight: 500;
+      font-size: .98rem; padding: .88rem 2.1rem; border-radius: 50px; border: none;
+      cursor: none; text-decoration: none; display: inline-flex; align-items: center; gap: .45rem;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .btn-primary:hover { transform: scale(1.04); box-shadow: 0 0 30px rgba(0,255,135,.4), 0 0 60px rgba(168,85,247,.2); }
+
+    .btn-secondary {
+      background: transparent; color: var(--green);
+      font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: .98rem;
+      padding: .88rem 2.1rem; border-radius: 50px; border: 1px solid var(--green);
+      cursor: none; text-decoration: none;
+      transition: background .2s, box-shadow .2s;
+    }
+    .btn-secondary:hover { background: rgba(0,255,135,.07); box-shadow: 0 0 18px rgba(0,255,135,.18); }
+
+    .scroll-indicator {
+      position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: .4rem;
+      color: rgba(255,255,255,.28); font-size: .72rem; letter-spacing: .1em;
+      animation: fadeInUp .7s ease .9s both;
+    }
+    .scroll-arrow { width: 20px; height: 20px; border-right: 2px solid rgba(255,255,255,.3); border-bottom: 2px solid rgba(255,255,255,.3); animation: scrollBounce 1.6s ease-in-out infinite; }
+
+    @media (max-width: 768px) { .hero-btns { flex-direction: column; align-items: center; } }
+
+    /* SERVICES */
+    #services { padding: 7rem 0; }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 1.4rem;
+    }
+    @media (max-width: 768px) { .services-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 480px) { .services-grid { grid-template-columns: 1fr; } }
+    @media (min-width: 1024px) { .services-grid { grid-template-columns: repeat(5, 1fr); } }
+
+    .service-card {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px; padding: 1.8rem 1.4rem;
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      cursor: none; transition: transform .3s, border-color .3s, box-shadow .3s;
+    }
+    .service-card:hover { transform: translateY(-8px); border-color: var(--green); box-shadow: 0 0 22px rgba(0,255,135,.14), 0 10px 30px rgba(0,0,0,.4); }
+    .service-icon { width: 46px; height: 46px; color: var(--green); margin-bottom: 1.2rem; }
+    .service-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.1rem; margin-bottom: .5rem; }
+    .service-desc { font-size: .87rem; color: rgba(255,255,255,.5); line-height: 1.6; margin-bottom: .9rem; }
+    .service-tags { font-size: .73rem; color: var(--purple); opacity: .85; }
+
+    /* HOW IT WORKS */
+    #how-it-works {
+      padding: 7rem 0;
+      background: radial-gradient(ellipse at 50% 50%, rgba(168,85,247,.05) 0%, transparent 70%);
+    }
+    .steps-wrapper { display: flex; align-items: flex-start; gap: 0; margin-top: 3.5rem; }
+    .step { flex: 1; text-align: center; padding: 0 1.5rem; position: relative; }
+    .step:not(:last-child)::after {
+      content: ''; position: absolute; top: 2.8rem; right: 0;
+      width: 100%; height: 1px; border-top: 1px dashed var(--glass-border);
+      transform: translateX(50%);
+    }
+    .step-number { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 3.8rem; color: var(--green); line-height: 1; margin-bottom: .9rem; position: relative; z-index: 1; }
+    .step-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.15rem; margin-bottom: .5rem; }
+    .step-desc { font-size: .88rem; color: rgba(255,255,255,.5); line-height: 1.6; }
+    @media (max-width: 768px) { .steps-wrapper { flex-direction: column; gap: 3rem; } .step:not(:last-child)::after { display: none; } }
+
+    /* PORTFOLIO */
+    #portfolio {
+      padding: 7rem 0; position: relative;
+      background-image: url('portfolio-space.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+    #portfolio::before {
+      content: ''; position: absolute; inset: 0;
+      background:
+        linear-gradient(180deg, var(--bg) 0%, rgba(5,5,16,.88) 20%, rgba(5,5,16,.88) 80%, var(--bg) 100%);
+      z-index: 0;
+    }
+    #portfolio > .container { position: relative; z-index: 1; }
+
+    .portfolio-filters { display: flex; gap: .65rem; justify-content: center; flex-wrap: wrap; margin: 1.8rem 0 2.8rem; }
+    .filter-btn {
+      background: var(--glass); border: 1px solid var(--glass-border); color: rgba(255,255,255,.65);
+      font-family: 'DM Sans', sans-serif; font-size: .87rem; padding: .45rem 1.15rem;
+      border-radius: 50px; cursor: none; transition: all .2s;
+    }
+    .filter-btn.active, .filter-btn:hover { background: var(--green); color: #050510; border-color: var(--green); font-weight: 500; }
+
+    .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.4rem; }
+    @media (max-width: 768px) { .portfolio-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 540px) { .portfolio-grid { grid-template-columns: 1fr; } }
+    @media (min-width: 1024px) { .portfolio-grid { grid-template-columns: repeat(3, 1fr); } }
+
+    .portfolio-card { border-radius: 14px; overflow: hidden; position: relative; cursor: none; background: var(--glass); border: 1px solid var(--glass-border); transition: transform .3s; }
+    .portfolio-card.hidden { display: none; }
+    .portfolio-card:hover { transform: translateY(-5px); }
+    .portfolio-card img { width: 100%; height: 230px; object-fit: cover; display: block; transition: transform .5s; }
+    .portfolio-card:hover img { transform: scale(1.06); }
+
+    .portfolio-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(0,255,135,.88), rgba(168,85,247,.88));
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      opacity: 0; transition: opacity .3s; text-align: center; padding: 1.5rem;
+    }
+    .portfolio-card:hover .portfolio-overlay { opacity: 1; }
+    .portfolio-overlay h3 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.25rem; color: #050510; margin-bottom: .35rem; }
+    .portfolio-overlay .meta { font-size: .82rem; color: rgba(5,5,16,.7); margin-bottom: 1.4rem; }
+    .btn-ver { background: rgba(5,5,16,.9); color: #fff; font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: .83rem; padding: .48rem 1.2rem; border-radius: 50px; border: none; cursor: none; transform: translateY(10px); transition: transform .3s; }
+    .portfolio-card:hover .btn-ver { transform: translateY(0); }
+    .portfolio-info { padding: 1.1rem 1.2rem; }
+    .portfolio-info h3 { font-family: 'Syne', sans-serif; font-size: 1rem; margin-bottom: .25rem; }
+    .portfolio-info .meta { font-size: .78rem; color: rgba(255,255,255,.38); }
+
+    /* TESTIMONIALS */
+    #testimonials { padding: 7rem 0; }
+    .testimonials-slider { position: relative; max-width: 680px; margin: 2.8rem auto 0; }
+    .testimonial-slide { display: none; animation: fadeInUp .45s ease; }
+    .testimonial-slide.active { display: block; }
+    .testimonial-card {
+      background: var(--glass); border: 1px solid var(--glass-border);
+      border-radius: 20px; padding: 2.8rem 2.4rem;
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    }
+    .quote-mark { font-family: 'Syne', sans-serif; font-size: 4.5rem; color: var(--green); line-height: .5; margin-bottom: 1.4rem; display: block; }
+    .testimonial-text { font-size: 1.02rem; line-height: 1.75; color: rgba(255,255,255,.78); margin-bottom: 1.8rem; font-style: italic; }
+    .testimonial-author { display: flex; align-items: center; gap: 1rem; }
+    .author-avatar { width: 46px; height: 46px; border-radius: 50%; background: linear-gradient(135deg, var(--green), var(--purple)); display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-weight: 700; font-size: .95rem; color: #050510; flex-shrink: 0; }
+    .author-info .name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: .97rem; }
+    .author-info .role { font-size: .82rem; color: rgba(255,255,255,.4); }
+
+    .slider-bullets { display: flex; justify-content: center; gap: .5rem; margin-top: 2rem; }
+    .bullet { width: 8px; height: 8px; border-radius: 50%; background: var(--glass-border); border: none; cursor: none; transition: background .2s, transform .2s; }
+    .bullet.active { background: var(--green); transform: scale(1.35); }
+
+    /* CTA */
+    #cta {
+      padding: 8rem 0; text-align: center; position: relative; overflow: hidden;
+      background-image: url('cta-space.jpg');
+      background-size: cover;
+      background-position: center;
+    }
+    #cta::before {
+      content: ''; position: absolute; inset: 0;
+      background:
+        linear-gradient(135deg, rgba(0,255,135,.35), rgba(168,85,247,.45)),
+        linear-gradient(180deg, var(--bg) 0%, transparent 15%, transparent 85%, var(--bg) 100%);
+      z-index: 0;
+    }
+    .cta-content { position: relative; z-index: 1; max-width: 600px; margin: 0 auto; }
+    .cta-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: clamp(1.9rem, 5vw, 3.4rem); margin-bottom: 1rem; line-height: 1.1; }
+    .cta-sub { color: rgba(255,255,255,.55); font-size: 1.08rem; margin-bottom: 2.4rem; }
+    .btn-cta {
+      background: linear-gradient(90deg, var(--green), var(--purple));
+      color: #050510; font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 1.08rem;
+      padding: 1.05rem 2.7rem; border-radius: 50px; border: none; cursor: none;
+      text-decoration: none; display: inline-flex; align-items: center; gap: .7rem;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .btn-cta:hover { transform: scale(1.04); box-shadow: 0 0 40px rgba(0,255,135,.4), 0 0 80px rgba(168,85,247,.22); }
+
+    /* FOOTER */
+    footer { background: #030308; padding: 4rem 0 2rem; border-top: 1px solid var(--glass-border); position: relative; z-index: 1; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2.8rem; margin-bottom: 3rem; }
+    @media (max-width: 768px) { .footer-grid { grid-template-columns: 1fr 1fr; } .footer-brand { grid-column: 1 / -1; } }
+    @media (max-width: 480px) { .footer-grid { grid-template-columns: 1fr; } }
+
+    .footer-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.4rem; background: linear-gradient(90deg, var(--green), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; display: block; margin-bottom: .7rem; }
+    .footer-tagline { font-size: .87rem; color: rgba(255,255,255,.38); line-height: 1.65; margin-bottom: 1.5rem; }
+    .social-links { display: flex; gap: .65rem; }
+    .social-link { width: 38px; height: 38px; border: 1px solid var(--glass-border); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,.45); text-decoration: none; transition: border-color .2s, color .2s, background .2s; }
+    .social-link:hover { border-color: var(--green); color: var(--green); background: rgba(0,255,135,.07); }
+    .footer-col h4 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: .93rem; margin-bottom: 1.2rem; color: rgba(255,255,255,.88); }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: .55rem; }
+    .footer-col ul li a, .footer-col ul li span { font-size: .87rem; color: rgba(255,255,255,.4); text-decoration: none; transition: color .2s; }
+    .footer-col ul li a:hover { color: rgba(255,255,255,.78); }
+    .footer-bottom { border-top: 1px solid var(--glass-border); padding-top: 1.8rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .footer-bottom p { font-size: .82rem; color: rgba(255,255,255,.22); }
+  </style>
+</head>
+<body>
+
+<canvas id="particles-canvas"></canvas>
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#hero" class="nav-logo">MEZZETTI</a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#services">Serviços</a></li>
+      <li><a href="#portfolio">Portfólio</a></li>
+      <li><a href="#how-it-works">Como Funciona</a></li>
+      <li><a href="#testimonials">Depoimentos</a></li>
+      <li><a href="#cta" class="btn-nav">Comece Agora</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      Studio Digital · Desde 2024
+    </div>
+    <h1 class="hero-title">
+      Criamos o<br>
+      <span class="hero-gradient">Extraordinário</span>
+    </h1>
+    <p class="hero-sub">Design · Sites · Apps · Jogos · Animação</p>
+    <p class="hero-desc">Transformamos ideias em experiências digitais que impressionam, convertem e ficam na memória.</p>
+    <div class="hero-btns">
+      <a href="#cta" class="btn-primary">Comece Agora →</a>
+      <a href="#portfolio" class="btn-secondary">Ver Portfólio</a>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <div class="scroll-arrow"></div>
+    <span>scroll</span>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="container">
+    <h2 class="section-title reveal">O que criamos</h2>
+    <p class="section-sub reveal">Soluções digitais completas, do conceito à entrega</p>
+    <div class="services-grid">
+
+      <div class="service-card reveal">
+        <svg class="service-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="24" cy="24" r="18"/>
+          <circle cx="24" cy="24" r="6" fill="currentColor" stroke="none" opacity=".25"/>
+          <path d="M24 6v6M24 36v6M6 24h6M36 24h6M11.5 11.5l4 4M32.5 32.5l4 4M11.5 36.5l4-4M32.5 15.5l4-4"/>
+        </svg>
+        <div class="service-name">Design</div>
+        <p class="service-desc">Identidade visual, UI/UX e branding que comunicam com impacto e consistência.</p>
+        <div class="service-tags">Figma · Illustrator</div>
+      </div>
+
+      <div class="service-card reveal">
+        <svg class="service-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="4" y="10" width="40" height="30" rx="4"/>
+          <path d="M4 18h40"/>
+          <circle cx="11" cy="14" r="1.8" fill="currentColor" stroke="none"/>
+          <circle cx="18" cy="14" r="1.8" fill="currentColor" stroke="none"/>
+          <path d="M13 27l4 4-4 4M21 35h10"/>
+        </svg>
+        <div class="service-name">Sites</div>
+        <p class="service-desc">Landing pages, e-commerce e portfólios que convertem e surpreendem.</p>
+        <div class="service-tags">HTML · React · Webflow</div>
+      </div>
+
+      <div class="service-card reveal">
+        <svg class="service-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="14" y="4" width="20" height="40" rx="4"/>
+          <path d="M14 10h20M14 38h20"/>
+          <circle cx="24" cy="43" r="1.5" fill="currentColor" stroke="none"/>
+          <rect x="18" y="16" width="12" height="9" rx="2" fill="currentColor" stroke="none" opacity=".2"/>
+          <path d="M18 30h12"/>
+        </svg>
+        <div class="service-name">Apps</div>
+        <p class="service-desc">Mobile e web apps sob medida, escaláveis e centrados na experiência.</p>
+        <div class="service-tags">React Native · Flutter</div>
+      </div>
+
+      <div class="service-card reveal">
+        <svg class="service-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="6" y="16" width="36" height="20" rx="8"/>
+          <path d="M16 22v8M12 26h8"/>
+          <circle cx="32" cy="24" r="2.2" fill="currentColor" stroke="none"/>
+          <circle cx="36" cy="28" r="2.2" fill="currentColor" stroke="none"/>
+          <path d="M18 8h12M24 8v8"/>
+        </svg>
+        <div class="service-name">Jogos</div>
+        <p class="service-desc">Assets, UI e concept art que elevam a experiência dos games a outro nível.</p>
+        <div class="service-tags">Unity · Godot · Spine</div>
+      </div>
+
+      <div class="service-card reveal">
+        <svg class="service-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="24" cy="24" r="18"/>
+          <polygon points="20,17 32,24 20,31" fill="currentColor" stroke="none" opacity=".25"/>
+          <path d="M20 17l12 7-12 7V17z"/>
+          <path d="M8 14c4-4 10-6 16-6M40 14c2 2 4 5 4 10"/>
+        </svg>
+        <div class="service-name">Animação</div>
+        <p class="service-desc">Motion graphics, 2D/3D e VFX que dão vida às ideias com precisão e estilo.</p>
+        <div class="service-tags">After Effects · Blender</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works">
+  <div class="container">
+    <h2 class="section-title reveal">Simples assim</h2>
+    <p class="section-sub reveal">Três etapas. Um resultado extraordinário.</p>
+    <div class="steps-wrapper">
+      <div class="step reveal">
+        <div class="step-number">01</div>
+        <div class="step-title">Briefing</div>
+        <p class="step-desc">Nos conta sua ideia, objetivos e referências. Quanto mais contexto, melhor o resultado.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-number">02</div>
+        <div class="step-title">Criação</div>
+        <p class="step-desc">Nossa equipe desenvolve com atenção a cada detalhe, iterando com você ao longo do processo.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-number">03</div>
+        <div class="step-title">Entrega</div>
+        <p class="step-desc">Você recebe algo que supera o esperado — pronto para ir ao ar e impressionar.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section id="portfolio">
+  <div class="container">
+    <h2 class="section-title reveal">Trabalhos recentes</h2>
+    <p class="section-sub reveal">Uma seleção do que já criamos</p>
+    <div class="portfolio-filters reveal">
+      <button class="filter-btn active" data-filter="all">Todos</button>
+      <button class="filter-btn" data-filter="design">Design</button>
+      <button class="filter-btn" data-filter="sites">Sites</button>
+      <button class="filter-btn" data-filter="apps">Apps</button>
+      <button class="filter-btn" data-filter="jogos">Jogos</button>
+      <button class="filter-btn" data-filter="animacao">Animação</button>
+    </div>
+    <div class="portfolio-grid" id="portfolio-grid">
+      <div class="portfolio-card reveal" data-category="design">
+        <img src="https://picsum.photos/600/400?random=11" alt="Marca Orbital" loading="lazy">
+        <div class="portfolio-overlay">
+          <h3>Marca Orbital</h3>
+          <div class="meta">Design · 2024</div>
+          <button class="btn-ver">Ver projeto</button>
+        </div>
+        <div class="portfolio-info"><h3>Marca Orbital</h3><div class="meta">Design · 2024</div></div>
+      </div>
+      <div class="portfolio-card reveal" data-category="sites">
+        <img src="https://picsum.photos/600/400?random=22" alt="Loja Nova Era" loading="lazy">
+        <div class="portfolio-overlay">
+          <h3>Loja Nova Era</h3>
+          <div class="meta">Sites · 2024</div>
+          <button class="btn-ver">Ver projeto</button>
+        </div>
+        <div class="portfolio-info"><h3>Loja Nova Era</h3><div class="meta">Sites · 2024</div></div>
+      </div>
+      <div class="portfolio-card reveal" data-category="apps">
+        <img src="https://picsum.photos/600/400?random=33" alt="App Nexus" loading="lazy">
+        <div class="portfolio-overlay">
+          <h3>App Nexus</h3>
+          <div class="meta">Apps · 2024</div>
+          <button class="btn-ver">Ver projeto</button>
+        </div>
+        <div class="portfolio-info"><h3>App Nexus</h3><div class="meta">Apps · 2024</div></div>
+      </div>
+      <div class="portfolio-card reveal" data-category="jogos">
+        <img src="https://picsum.photos/600/400?random=44" alt="Game UI Vortex" loading="lazy">
+        <div class="portfolio-overlay">
+          <h3>Game UI Vortex</h3>
+          <div class="meta">Jogos · 2024</div>
+          <button class="btn-ver">Ver projeto</button>
+        </div>
+        <div class="portfolio-info"><h3>Game UI Vortex</h3><div class="meta">Jogos · 2024</div></div>
+      </div>
+      <div class="portfolio-card reveal" data-category="animacao">
+        <img src="https://picsum.photos/600/400?random=55" alt="Reel 3D Cosmos" loading="lazy">
+        <div class="portfolio-overlay">
+          <h3>Reel 3D Cosmos</h3>
+          <div class="meta">Animação · 2024</div>
+          <button class="btn-ver">Ver projeto</button>
+        </div>
+        <div class="portfolio-info"><h3>Reel 3D Cosmos</h3><div class="meta">Animação · 2024</div></div>
+      </div>
+      <div class="portfolio-card reveal" data-category="design">
+        <img src="https://picsum.photos/600/400?random=66" alt="UI System Zero" loading="lazy">
+        <div class="portfolio-overlay">
+          <h3>UI System Zero</h3>
+          <div class="meta">Design · 2024</div>
+          <button class="btn-ver">Ver projeto</button>
+        </div>
+        <div class="portfolio-info"><h3>UI System Zero</h3><div class="meta">Design · 2024</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="container">
+    <h2 class="section-title reveal">O que dizem sobre nós</h2>
+    <div class="testimonials-slider reveal" id="testimonials-slider">
+      <div class="testimonial-slide active">
+        <div class="testimonial-card">
+          <span class="quote-mark">"</span>
+          <p class="testimonial-text">A MEZZETTI transformou por completo a identidade da nossa marca. O resultado foi além das expectativas — profissional, criativo e entregue no prazo. Recomendo sem hesitar.</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">AM</div>
+            <div class="author-info"><div class="name">Ana Medeiros</div><div class="role">CEO · Orbital Brands</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-slide">
+        <div class="testimonial-card">
+          <span class="quote-mark">"</span>
+          <p class="testimonial-text">Trabalhar com a MEZZETTI foi uma das melhores decisões do projeto. Eles entenderam exatamente a visão do jogo e entregaram assets que elevaram toda a experiência visual.</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">RC</div>
+            <div class="author-info"><div class="name">Rafael Costa</div><div class="role">Game Designer · Vortex Studios</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-slide">
+        <div class="testimonial-card">
+          <span class="quote-mark">"</span>
+          <p class="testimonial-text">Nossa landing page nova converteu 3× mais desde o redesign. A atenção ao detalhe e o cuidado com a experiência do usuário são impressionantes. Parceria de longo prazo, com certeza.</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">LF</div>
+            <div class="author-info"><div class="name">Larissa Ferreira</div><div class="role">Marketing Lead · Nova Era Digital</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slider-bullets reveal">
+      <button class="bullet active" data-idx="0"></button>
+      <button class="bullet" data-idx="1"></button>
+      <button class="bullet" data-idx="2"></button>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="container">
+    <div class="cta-content reveal">
+      <h2 class="cta-title">Pronto para criar algo incrível?</h2>
+      <p class="cta-sub">Vamos transformar sua ideia em realidade. Entre em contato hoje.</p>
+      <a href="mailto:contato@mezzetti.studio" class="btn-cta">
+        Comece Agora
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="footer-logo">MEZZETTI</span>
+        <p class="footer-tagline">Studio digital criativo especializado em design, sites, apps, jogos e animação. Criamos o extraordinário.</p>
+        <div class="social-links">
+          <a href="#" class="social-link" aria-label="Instagram">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a href="#" class="social-link" aria-label="Behance">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M7.5 11.5c1.38 0 2.5-.672 2.5-2S8.88 7.5 7.5 7.5H3v4h4.5zm0 1.5H3v4.5h4.5c1.38 0 2.5-.895 2.5-2.25S8.88 13 7.5 13zM15 8h5v1.5h-5V8zm2.5 3c-2.485 0-4.5 2.015-4.5 4.5s2.015 4.5 4.5 4.5c1.76 0 3.293-.813 4.23-2.065l-1.73-1.001C19.461 17.668 18.556 18 17.5 18c-1.3 0-2.415-.75-2.86-1.852H22c.065-.378.099-.768.099-1.148 0-2.485-2.014-4.5-4.599-4.5zm-2.86 3.5c.445-1.102 1.56-1.852 2.86-1.852s2.415.75 2.86 1.852H14.64z"/></svg>
+          </a>
+          <a href="#" class="social-link" aria-label="LinkedIn">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+          <a href="#" class="social-link" aria-label="GitHub">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Serviços</h4>
+        <ul>
+          <li><a href="#services">Design</a></li>
+          <li><a href="#services">Sites</a></li>
+          <li><a href="#services">Apps</a></li>
+          <li><a href="#services">Jogos</a></li>
+          <li><a href="#services">Animação</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Links</h4>
+        <ul>
+          <li><a href="#portfolio">Portfólio</a></li>
+          <li><a href="#how-it-works">Como Funciona</a></li>
+          <li><a href="#testimonials">Depoimentos</a></li>
+          <li><a href="#cta">Contato</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contato</h4>
+        <ul>
+          <li><span>contato@mezzetti.studio</span></li>
+          <li><span>São Paulo, Brasil</span></li>
+          <li><span>+55 (11) 9 0000-0000</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2024 MEZZETTI Studio Digital. Todos os direitos reservados.</p>
+      <p>Feito com paixão e pixels.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+// PARTICLES CANVAS
+(function () {
+  const canvas = document.getElementById('particles-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+  const N = 80, DIST = 120;
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  function mkp() {
+    return {
+      x: Math.random() * W, y: Math.random() * H,
+      vx: (Math.random() - .5) * .4, vy: (Math.random() - .5) * .4,
+      r: Math.random() * 1.5 + .5,
+      col: Math.random() > .5 ? '255,255,255' : '0,255,135',
+      a: Math.random() * .25 + .05
+    };
+  }
+
+  resize();
+  for (let i = 0; i < N; i++) particles.push(mkp());
+  window.addEventListener('resize', resize);
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach((p, i) => {
+      p.x = (p.x + p.vx + W) % W;
+      p.y = (p.y + p.vy + H) % H;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${p.col},${p.a})`;
+      ctx.fill();
+      for (let j = i + 1; j < particles.length; j++) {
+        const q = particles[j];
+        const dx = p.x - q.x, dy = p.y - q.y;
+        const d = Math.sqrt(dx * dx + dy * dy);
+        if (d < DIST) {
+          const t = d / DIST;
+          const alpha = (1 - t) * .14;
+          // lerp green -> purple
+          const r = Math.round(t * 168), g = Math.round(255 - t * 170), b = Math.round(135 + t * 112);
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(q.x, q.y);
+          ctx.strokeStyle = `rgba(${r},${g},${b},${alpha})`;
+          ctx.lineWidth = .7;
+          ctx.stroke();
+        }
+      }
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// CUSTOM CURSOR
+(function () {
+  if (window.matchMedia('(hover: none)').matches) return;
+  const dot = document.getElementById('cursor-dot');
+  const ring = document.getElementById('cursor-ring');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    dot.style.left = mx + 'px';
+    dot.style.top = my + 'px';
+  });
+
+  (function lerp() {
+    rx += (mx - rx) * .12;
+    ry += (my - ry) * .12;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(lerp);
+  })();
+
+  document.querySelectorAll('a, button, .service-card, .portfolio-card').forEach(el => {
+    el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+    el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+  });
+})();
+
+// NAV SCROLL
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', scrollY > 40);
+});
+
+// HAMBURGER
+(function () {
+  const btn = document.getElementById('hamburger');
+  const links = document.getElementById('nav-links');
+  btn.addEventListener('click', () => {
+    btn.classList.toggle('open');
+    links.classList.toggle('open');
+  });
+  links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    btn.classList.remove('open'); links.classList.remove('open');
+  }));
+})();
+
+// SCROLL REVEAL
+(function () {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const parent = e.target.parentElement;
+      const siblings = parent ? [...parent.querySelectorAll('.reveal')] : [];
+      const idx = siblings.indexOf(e.target);
+      const stagger = (parent && (parent.classList.contains('services-grid') || parent.classList.contains('portfolio-grid') || parent.classList.contains('steps-wrapper'))) ? idx * 90 : 0;
+      setTimeout(() => e.target.classList.add('visible'), stagger);
+      obs.unobserve(e.target);
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+})();
+
+// PORTFOLIO FILTERS
+(function () {
+  const btns = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll('.portfolio-card');
+  btns.forEach(btn => btn.addEventListener('click', () => {
+    btns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const f = btn.dataset.filter;
+    cards.forEach(c => c.classList.toggle('hidden', f !== 'all' && c.dataset.category !== f));
+  }));
+})();
+
+// TESTIMONIALS CAROUSEL
+(function () {
+  const slides = document.querySelectorAll('.testimonial-slide');
+  const bullets = document.querySelectorAll('.bullet');
+  let cur = 0, timer;
+
+  function goTo(i) {
+    slides[cur].classList.remove('active');
+    bullets[cur].classList.remove('active');
+    cur = i;
+    slides[cur].classList.add('active');
+    bullets[cur].classList.add('active');
+  }
+
+  function start() { timer = setInterval(() => goTo((cur + 1) % slides.length), 5000); }
+  function stop() { clearInterval(timer); }
+
+  bullets.forEach(b => b.addEventListener('click', () => { stop(); goTo(+b.dataset.idx); start(); }));
+  const sl = document.getElementById('testimonials-slider');
+  sl.addEventListener('mouseenter', stop);
+  sl.addEventListener('mouseleave', start);
+  start();
+})();
+</script>
+</body>
+</html>
