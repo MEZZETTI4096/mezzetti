@@ -45,6 +45,14 @@ nav .brand .word .exp{font-family:'JetBrains Mono',monospace;font-size:9px;font-
 nav .links{display:flex;gap:32px}
 nav .links a{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--paper-dim);text-decoration:none;transition:color .2s}
 nav .links a:hover{color:var(--paper)}
+nav .links a.the-index{position:relative;color:var(--paper);padding:6px 14px;border:1px solid rgba(255,255,255,.15);border-radius:999px;overflow:visible;animation:indexGlow 4.5s ease-in-out infinite}
+nav .links a.the-index:hover{color:var(--paper)}
+@keyframes indexGlow{
+  0%,100%{box-shadow:0 0 12px 1px var(--violet),0 0 24px 2px rgba(107,43,255,.35)}
+  33%{box-shadow:0 0 12px 1px var(--lime),0 0 24px 2px rgba(214,255,58,.35)}
+  66%{box-shadow:0 0 12px 1px var(--orange),0 0 24px 2px rgba(255,91,31,.35)}
+}
+@media (prefers-reduced-motion: reduce){nav .links a.the-index{animation:none;box-shadow:0 0 12px 1px var(--violet)}}
 
 /* HERO */
 .hero{padding:160px 0 96px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:48px}
@@ -79,6 +87,20 @@ section.s{padding:96px 0}
 .manifesto .right p strong{font-weight:500;color:var(--paper)}
 .manifesto .right p em{font-style:italic;color:var(--lime)}
 .manifesto .right p:last-child{font-style:italic;color:var(--paper-dim)}
+
+/* MANIFESTO FULL */
+.manifesto-full{max-width:760px;margin:0 auto}
+.manifesto-title{font-family:'Fraunces',serif;font-weight:300;font-size:48px;letter-spacing:-.03em;line-height:1.05;margin-bottom:48px;text-align:center}
+.manifesto-title em{font-style:italic;color:var(--lime)}
+.manifesto-body p{font-size:17px;line-height:1.7;color:var(--paper-dim);margin-bottom:20px;max-width:none}
+.manifesto-body p.lead{font-family:'Fraunces',serif;font-weight:300;font-size:26px;line-height:1.35;color:var(--paper);margin:32px 0;letter-spacing:-.01em}
+.manifesto-body p.lead em{font-style:italic}
+.manifesto-body p em{font-style:italic;color:var(--paper)}
+@media (max-width:920px){
+  .manifesto-title{font-size:32px;margin-bottom:32px}
+  .manifesto-body p{font-size:16px}
+  .manifesto-body p.lead{font-size:21px}
+}
 
 /* SERVICES */
 .services-subtitle{font-size:16px;color:var(--paper-dim);letter-spacing:.01em;margin-bottom:28px;margin-top:-12px}
@@ -301,6 +323,7 @@ footer .left .word .exp{font-family:'JetBrains Mono',monospace;font-size:8px;fon
       <a href="#servicos">Serviços</a>
       <a href="#principios">Princípios</a>
       <a href="#contato">Contato</a>
+      <a href="https://mezzetti4096.github.io/mezzetti-index-studio/" target="_blank" rel="noopener" class="the-index">The index</a>
     </div>
   </div>
 </nav>
@@ -323,16 +346,26 @@ footer .left .word .exp{font-family:'JetBrains Mono',monospace;font-size:8px;fon
 <!-- SOBRE -->
 <section class="s wrap" id="sobre">
   <div class="s-label"><span class="mono">01 / Sobre</span><span class="mono">Manifesto</span></div>
-  <div class="manifesto">
-    <div class="left">
-      <p><em>Mezzetti⁴⁰⁹⁶ é um estúdio de autor</em> que opera no cruzamento entre rigor de sistema e expressão editorial.</p>
-    </div>
-    <div class="right">
-      <p>Cada projeto nasce de uma combinação única dentro de um <span style="color:var(--lime)">sistema</span> pensado nos mínimos <span style="color:var(--violet)">detalhes</span>. Nada sai de um template pronto.</p>
-      <p>Cada peça existe por um motivo, em uma coordenada própria, construída com <span style="color:var(--lime)">intenção</span>. A gente acredita que os <span style="color:var(--violet)">detalhes</span> mudam tudo.</p>
-      <p>O <span style="color:var(--lime)">equilíbrio</span> invisível da tipografia, a <span style="color:var(--violet)">hierarquia</span> que respira, as cores que carregam <span style="color:var(--orange)">personalidade</span>.</p>
-      <p>Talvez muita gente não perceba isso de forma consciente, mas quem entende valor reconhece na primeira olhada. E é justamente para esse olhar mais apurado que criamos junto do proposito de sua empresa, algo memorável.</p>
-      <p><em>Porque no fim, não se trata apenas de design. Se trata de construir uma assinatura visual capaz de <span style="color:var(--lime)">realmente</span> <span style="color:var(--violet)">deixar</span> <span style="color:var(--orange)">presença</span>.</em></p>
+  <div class="manifesto-full">
+    <h2 class="manifesto-title">MANIFESTO <em>Mezzetti⁴⁰⁹⁶-Studio</em></h2>
+    <div class="manifesto-body">
+      <p>Nunca antes a criatividade humana teve tanto espaço para crescer, tanta ferramenta para construir, tanto alcance para transformar. Tantas linguagens. Tantas estéticas. Tantas possibilidades de criar, comunicar, existir. O universo se expandiu — e continua expandindo — numa velocidade extraordinária, carregando consigo uma verdade inegável:</p>
+      <p class="lead">Pela primeira vez na história, <span style="color:var(--lime)">autenticidade é o ativo mais valioso que existe</span>.</p>
+      <p class="lead">Este é <span style="color:var(--violet)">o tempo da identidade</span>.</p>
+      <p>Quando tudo é possível, quem tem clareza sobre si mesmo possui a maior vantagem do mundo. Não é uma questão de competição — é uma questão de presença. De chegar num espaço e ser imediatamente reconhecido, sentido, lembrado. De criar uma conexão que vai além da estética e toca algo mais profundo: a verdade de uma marca que sabe quem é.</p>
+      <p><em>A Mezzetti⁴⁰⁹⁶-Studio nasceu para potencializar essa verdade.</em></p>
+      <p>Acreditamos que o ato mais transformador desta era é criar com convicção. Que ter identidade clara é a forma mais generosa de se relacionar com o mundo — porque quando você sabe quem é, as pessoas certas te encontram. As conexões certas acontecem. O trabalho certo surge.</p>
+      <p class="lead">Num universo de possibilidades infinitas, <em>quem define sua identidade define seu destino</em>.</p>
+      <p>Identidade não é decoração. Não é tendência aplicada. Não é o template mais bonito do momento.</p>
+      <p>Identidade é a estrutura que sustenta tudo. É o conjunto de escolhas — conscientes, corajosas, genuínas — que transforma uma marca em algo que o mundo reconhece e não esquece. É o que faz um projeto durar, crescer e inspirar outros a fazer o mesmo.</p>
+      <p>Aqui, cada trabalho começa com uma pergunta que abre horizontes:</p>
+      <p class="lead"><em>Quem você é quando está no seu melhor?</em></p>
+      <p>Essa resposta é o que construímos juntos. Em forma. Em linguagem. Em sistema visual. Em uma presença que cresce com o tempo e se aprofunda a cada escolha.</p>
+      <p>Não somos um estúdio que apenas registra quem você é hoje. Somos um estúdio que ajuda você a descobrir quem você pode se tornar.</p>
+      <p>A grande oportunidade criativa deste tempo está na profundidade. Em quem ousa ter um ponto de vista genuíno — e o expressa com beleza, com inteligência, com intenção.</p>
+      <p>O mundo está aberto. As ferramentas existem. O espaço está disponível.</p>
+      <p>O que falta, para muitos, é a clareza de si mesmo. E é exatamente isso que nós oferecemos.</p>
+      <p class="lead">Em um universo de possibilidades, <span style="color:var(--orange)">nós definimos identidade</span>.</p>
     </div>
   </div>
 </section>
