@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Manifesto — Mezzetti⁴⁰⁹⁶ Studio</title>
+<meta name="description" content="O manifesto do estúdio Mezzetti⁴⁰⁹⁶. Por que identidade clara é o ativo mais valioso desta era.">
+<meta property="og:title" content="Manifesto Mezzetti⁴⁰⁹⁶">
+<meta property="og:description" content="Em um universo de possibilidades, nós definimos identidade.">
+<meta property="og:type" content="article">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0b0a;--paper:#f4f1ea;--paper-dim:#9c978c;--rule:#23221f;--lime:#d6ff3a;--violet:#6b2bff;--orange:#ff5b1f}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--paper);font-family:'Inter',sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1240px;margin:0 auto;padding:0 56px}
+.mono{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--paper-dim)}
+nav{position:fixed;top:0;left:0;right:0;z-index:50;backdrop-filter:blur(12px);background:rgba(11,11,10,.72);border-bottom:1px solid var(--rule)}
+nav .row{display:flex;align-items:center;justify-content:space-between;padding:18px 0}
+nav .brand{display:flex;align-items:center;gap:14px;text-decoration:none;color:inherit}
+nav .brand svg{width:32px;height:32px;color:var(--paper);overflow:visible}
+nav .brand .word{font-family:'Fraunces',serif;font-weight:300;font-size:22px;letter-spacing:-.03em;position:relative}
+nav .brand .word .exp{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--lime);position:absolute;top:1px;right:-22px}
+nav .back{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--paper-dim);text-decoration:none;transition:color .2s}
+nav .back:hover{color:var(--paper)}
+.manifesto-page{padding:160px 0 96px;max-width:760px;margin:0 auto}
+.eyebrow{display:block;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--paper-dim);text-align:center;margin-bottom:24px}
+h1{font-family:'Fraunces',serif;font-weight:300;font-size:64px;letter-spacing:-.035em;line-height:1.02;text-align:center;margin-bottom:56px}
+h1 em{font-style:italic;color:var(--lime)}
+.body p{font-size:17px;line-height:1.75;color:var(--paper-dim);margin-bottom:22px}
+.body p.lead{font-family:'Fraunces',serif;font-weight:300;font-size:28px;line-height:1.3;color:var(--paper);margin:40px 0;letter-spacing:-.01em}
+.body p.lead em{font-style:italic}
+.body p em{font-style:italic;color:var(--paper)}
+.principles{margin:96px 0 0;display:grid;grid-template-columns:repeat(2,1fr);gap:48px 64px}
+.principle{display:grid;grid-template-columns:60px 1fr;gap:24px;align-items:start}
+.principle .num{font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:500;line-height:1}
+.principle h4{font-family:'Fraunces',serif;font-weight:300;font-size:24px;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+.principle h4 em{font-style:italic;color:var(--lime)}
+.principle:nth-child(2) h4 em{color:var(--violet)}
+.principle:nth-child(3) h4 em{color:var(--orange)}
+.principle:nth-child(4) h4 em{color:var(--lime)}
+.principle p{font-size:14px;color:var(--paper-dim);line-height:1.6}
+.principle ul{list-style:none;margin:8px 0 10px;padding:0}
+.principle ul li{font-size:14px;color:var(--paper-dim);line-height:1.6}
+.principle ul li::before{content:"— ";color:var(--rule)}
+.cta-back{margin:96px 0 0;text-align:center}
+.cta-back a{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--lime);text-decoration:none;border:1px solid var(--rule);padding:14px 28px;display:inline-block;transition:border-color .2s,background .2s}
+.cta-back a:hover{border-color:var(--lime);background:#111110}
+footer{padding:48px 0;border-top:1px solid var(--rule);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:18px}
+footer .left{display:flex;align-items:center;gap:14px}
+footer .left svg{width:24px;height:24px;color:var(--paper);overflow:visible}
+footer .left .word{font-family:'Fraunces',serif;font-weight:300;font-size:16px;position:relative}
+footer .left .word .exp{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--lime);position:absolute;top:1px;right:-18px}
+@media (max-width:920px){
+  .wrap{padding:0 24px}
+  .manifesto-page{padding:110px 0 56px}
+  h1{font-size:38px;margin-bottom:32px}
+  .body p{font-size:16px}
+  .body p.lead{font-size:22px}
+  .principles{grid-template-columns:1fr;gap:32px}
+  footer{padding:32px 0}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="glyph" viewBox="0 0 200 200"><g transform="translate(100 100)"><g fill="none" stroke="currentColor" stroke-width="1" stroke-opacity="0.4"><circle cx="0" cy="0" r="39"/><circle cx="0" cy="-39" r="39"/><circle cx="33.775" cy="-19.5" r="39"/><circle cx="33.775" cy="19.5" r="39"/><circle cx="0" cy="39" r="39"/><circle cx="-33.775" cy="19.5" r="39"/><circle cx="-33.775" cy="-19.5" r="39"/></g><circle cx="0" cy="0" r="78" fill="none" stroke="currentColor" stroke-width="1.2"/><polygon points="0,-78 67.55,39 -67.55,39" fill="none" stroke="currentColor" stroke-width="1.2" stroke-opacity="0.55"/><circle cx="0" cy="-78" r="6.5" fill="#D6FF3A"/><circle cx="67.55" cy="39" r="6.5" fill="#6B2BFF"/><circle cx="-67.55" cy="39" r="6.5" fill="#FF5B1F"/><circle cx="0" cy="0" r="2.4" fill="currentColor"/></g></symbol></defs></svg>
+
+<nav>
+  <div class="wrap row">
+    <a href="index.html" class="brand">
+      <svg><use href="#glyph"/></svg>
+      <span class="word">Mezz<em style="font-style:italic">e</em>tti<span class="exp">4096</span></span>
+    </a>
+    <a href="index.html" class="back">← Voltar</a>
+  </div>
+</nav>
+
+<main class="wrap manifesto-page">
+  <span class="eyebrow">Manifesto · Mezzetti⁴⁰⁹⁶ Studio</span>
+  <h1>Em um universo de possibilidades, <em>nós definimos identidade.</em></h1>
+  <div class="body">
+    <p>Nunca antes a criatividade humana teve tanto espaço para crescer, tanta ferramenta para construir, tanto alcance para transformar. Tantas linguagens. Tantas estéticas. Tantas possibilidades de criar, comunicar, existir. O universo se expandiu — e continua expandindo — numa velocidade extraordinária, carregando uma verdade inegável:</p>
+    <p class="lead">Pela primeira vez na história, <span style="color:var(--lime)">autenticidade é o ativo mais valioso que existe</span>.</p>
+    <p class="lead">Este é <span style="color:var(--violet)">o tempo da identidade</span>.</p>
+    <p>Quando tudo é possível, quem tem clareza sobre si mesmo possui a maior vantagem do mundo. Não é uma questão de competição — é uma questão de presença. De chegar num espaço e ser imediatamente reconhecido, sentido, lembrado.</p>
+    <p><em>A Mezzetti⁴⁰⁹⁶ Studio nasceu para potencializar essa verdade.</em></p>
+    <p>Acreditamos que o ato mais transformador desta era é criar com convicção. Que ter identidade clara é a forma mais generosa de se relacionar com o mundo — porque quando você sabe quem é, as pessoas certas te encontram. As conexões certas acontecem. O trabalho certo surge.</p>
+    <p class="lead">Num universo de possibilidades infinitas, <em>quem define sua identidade define seu destino</em>.</p>
+    <p>Identidade não é decoração. Não é tendência aplicada. Não é o template mais bonito do momento. Identidade é a estrutura que sustenta tudo. É o conjunto de escolhas — conscientes, corajosas, genuínas — que transforma uma marca em algo que o mundo reconhece e não esquece.</p>
+    <p>Aqui, cada trabalho começa com uma pergunta que abre horizontes:</p>
+    <p class="lead"><em>Quem você é quando está no seu melhor?</em></p>
+    <p>Essa resposta é o que construímos juntos. Em forma. Em linguagem. Em sistema visual. Em uma presença que cresce com o tempo e se aprofunda a cada escolha.</p>
+    <p>Não somos um estúdio que apenas registra quem você é hoje. Somos um estúdio que ajuda você a descobrir quem você pode se tornar.</p>
+    <p class="lead">Em um universo de possibilidades, <span style="color:var(--orange)">nós definimos identidade</span>.</p>
+  </div>
+
+  <section class="principles">
+    <div class="principle">
+      <div class="num">01</div>
+      <div>
+        <h4>Clareza <em>gera direção.</em></h4>
+        <p>Precisamos entender sua marca, seu objetivo, seu público e a percepção que deseja construir. Projetos fortes começam com intenção clara.</p>
+      </div>
+    </div>
+    <div class="principle">
+      <div class="num">02</div>
+      <div>
+        <h4>Referência <em>não é cópia.</em></h4>
+        <p>Estilos, marcas, atmosferas e imagens ajudam a alinhar linguagem e direção estética — mas o resultado é sempre seu, nunca de outro.</p>
+      </div>
+    </div>
+    <div class="principle">
+      <div class="num">03</div>
+      <div>
+        <h4>Organização <em>acelera qualidade.</em></h4>
+        <p>Textos, imagens, arquivos e feedbacks objetivos e organizados. Processos fluidos criam resultados melhores.</p>
+      </div>
+    </div>
+    <div class="principle">
+      <div class="num">04</div>
+      <div>
+        <h4>Confiança <em>no processo.</em></h4>
+        <p>Cada decisão visual tem estratégia. Foco não é seguir tendência, é construir identidade consistente, relevante e duradoura.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="cta-back">
+    <a href="index.html#ofertas">Ver ofertas e começar →</a>
+  </div>
+</main>
+
+<footer class="wrap">
+  <div class="left">
+    <svg><use href="#glyph"/></svg>
+    <span class="word">Mezz<em style="font-style:italic">e</em>tti<span class="exp">4096</span></span>
+  </div>
+  <div class="mono">© 2026 · SP · Remoto Brasil</div>
+</footer>
+</body>
+</html>
