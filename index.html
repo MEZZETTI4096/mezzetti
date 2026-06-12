@@ -335,7 +335,7 @@ footer .right a:hover{color:var(--paper)}
     </a>
     <div class="links">
       <a href="#ofertas">Ofertas</a>
-      <a href="#cases">Cases</a>
+      <a href="cases.html">Cases</a>
       <a href="#como">Como funciona</a>
       <a href="manifesto.html">Manifesto</a>
       <a class="nav-wa" data-wa data-msg="Olá! Cheguei pelo site e quero conversar.">WhatsApp</a>
@@ -465,72 +465,75 @@ footer .right a:hover{color:var(--paper)}
 </section>
 
 <!-- CASES -->
+<style>
+/* TEASER CASES (apenas escopo .cases-teaser) */
+.cases-teaser{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:8px}
+.case-teaser{display:flex;flex-direction:column;border:1px solid var(--rule);background:var(--card);text-decoration:none;color:inherit;border-radius:2px;overflow:hidden;transition:border-color .2s,transform .2s;position:relative}
+.case-teaser:hover{border-color:var(--paper-dim);transform:translateY(-3px)}
+.case-teaser .thumb{aspect-ratio:16/10;background-size:cover;background-position:center;position:relative;border-bottom:1px solid var(--rule)}
+.case-teaser .thumb::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,11,10,0) 40%,rgba(11,11,10,.7) 100%);pointer-events:none}
+.case-teaser .thumb-tag{position:absolute;top:14px;left:14px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--paper);background:rgba(11,11,10,.62);backdrop-filter:blur(6px);padding:5px 10px;border-radius:2px;z-index:2}
+.case-teaser .ct-body{padding:24px 24px 28px;display:flex;flex-direction:column;gap:10px;flex:1}
+.case-teaser .ct-num{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent,var(--lime))}
+.case-teaser:nth-child(1) .ct-num{color:var(--lime)}
+.case-teaser:nth-child(2) .ct-num{color:var(--violet)}
+.case-teaser:nth-child(3) .ct-num{color:var(--orange)}
+.case-teaser h3{font-family:'Fraunces',serif;font-weight:300;font-size:28px;letter-spacing:-.025em;line-height:1.02}
+.case-teaser h3 em{font-style:italic;color:var(--lime)}
+.case-teaser:nth-child(2) h3 em{color:var(--violet)}
+.case-teaser:nth-child(3) h3 em{color:var(--orange)}
+.case-teaser p{font-size:14px;color:var(--paper-dim);line-height:1.55}
+.case-teaser .ct-cta{margin-top:auto;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--paper);display:inline-flex;align-items:center;gap:8px;padding-top:10px}
+.case-teaser .ct-cta .arrow{transition:transform .2s}
+.case-teaser:hover .ct-cta .arrow{transform:translateX(4px)}
+.cases-allcta{text-align:center;margin-top:36px}
+@media (max-width:980px){.cases-teaser{grid-template-columns:1fr}}
+</style>
 <section class="s wrap" id="cases">
-  <div class="s-label"><span class="mono">03 / Cases</span><span class="mono">Antes e depois</span></div>
-  <h2>O que muda quando o design <em>tem sistema.</em></h2>
-  <p class="lede">Arraste a barra para revelar a transformação. Cada case mostra o ponto de partida do cliente e o resultado entregue.</p>
-  <div class="cases">
+  <div class="s-label"><span class="mono">03 / Cases</span><span class="mono">Antes & depois</span></div>
+  <h2>A diferença que o design faz. <em>Arraste e veja.</em></h2>
+  <p class="lede">Três projetos conceito mostram, lado a lado, o site que afasta e o site que atrai. Mesma empresa, outra percepção. Toca um card para abrir o case e arrastar.</p>
+  <div class="cases-teaser">
 
-    <article class="case">
-      <div class="case-media" data-slider>
-        <div class="before">Nuovi Capelli<br><span style="font-size:14px;color:var(--paper-dim);font-family:'JetBrains Mono',monospace;display:block;margin-top:8px">— antes —</span></div>
-        <div class="after">Sistema de identidade<br><span style="font-size:14px;color:var(--lime);font-family:'JetBrains Mono',monospace;display:block;margin-top:8px">— depois —</span></div>
-        <div class="label l-before">Antes</div>
-        <div class="label l-after">Depois</div>
-        <div class="slider-line"></div>
-        <div class="slider-handle">⇔</div>
+    <a class="case-teaser" href="cases.html#case-01">
+      <div class="thumb" style="background-image:url('assets/barb-salao.jpg')">
+        <span class="thumb-tag">Antes & depois</span>
       </div>
-      <div class="case-content">
-        <span class="num">CASE.01 · Identidade + Site + Social</span>
-        <h3>Nuovi Capelli</h3>
-        <div class="meta"><span>Setor: Beleza</span><span>Prazo: 4 semanas</span></div>
-        <div><span class="lbl">Desafio</span><p class="desafio">Salão sem identidade consistente — material disperso em redes, site genérico, sem tom de marca próprio.</p></div>
-        <div><span class="lbl">Solução</span><p class="solucao">Sistema de identidade completo: logo, paleta, tipografia, templates de Instagram e site responsivo focado em agendamento.</p></div>
-        <div><span class="lbl">Resultado</span><p class="resultado">Aumento de presença digital, padronização visual em todas as peças e canal direto de captação.</p></div>
-        <a class="case-cta" data-wa data-msg="Vi o case da Nuovi Capelli e quero algo parecido para minha marca.">Quero algo assim →</a>
+      <div class="ct-body">
+        <span class="ct-num">01 / Barbearia</span>
+        <h3>Vulcano — <em>do amador ao premium.</em></h3>
+        <p>Identidade premium dark + brass, preços claros e agendamento pelo WhatsApp em um toque.</p>
+        <span class="ct-cta">Abrir case <span class="arrow">→</span></span>
       </div>
-    </article>
+    </a>
 
-    <article class="case">
-      <div class="case-media" data-slider>
-        <div class="before">Projeto em construção<br><span style="font-size:14px;color:var(--paper-dim);font-family:'JetBrains Mono',monospace;display:block;margin-top:8px">— briefing recebido —</span></div>
-        <div class="after">Sistema entregue<br><span style="font-size:14px;color:var(--violet);font-family:'JetBrains Mono',monospace;display:block;margin-top:8px">— após 21 dias —</span></div>
-        <div class="label l-before">Antes</div>
-        <div class="label l-after">Depois</div>
-        <div class="slider-line" style="background:var(--violet);box-shadow:0 0 12px rgba(107,43,255,.5)"></div>
-        <div class="slider-handle" style="background:var(--violet);color:#fff">⇔</div>
+    <a class="case-teaser" href="cases.html#case-02">
+      <div class="thumb" style="background-image:url('assets/odonto-clinica.jpg')">
+        <span class="thumb-tag">Antes & depois</span>
       </div>
-      <div class="case-content">
-        <span class="num" style="color:var(--violet)">CASE.02 · Identidade visual</span>
-        <h3>Marca de moda autoral</h3>
-        <div class="meta"><span>Setor: Moda</span><span>Prazo: 3 semanas</span></div>
-        <div><span class="lbl">Desafio</span><p class="desafio">Estilista lançando linha cápsula sem identidade definida — precisava de selo visual reconhecível para etiquetas, embalagens e lookbook.</p></div>
-        <div><span class="lbl">Solução</span><p class="solucao">Sistema editorial com monograma, paleta sazonal e templates de aplicação em peças impressas e digitais.</p></div>
-        <div><span class="lbl">Resultado</span><p class="resultado">Marca pronta para escalar com coerência visual entre coleções e canais.</p></div>
-        <a class="case-cta" data-wa data-msg="Quero uma identidade autoral como o case 02.">Quero algo assim →</a>
+      <div class="ct-body">
+        <span class="ct-num">02 / Saúde</span>
+        <h3>Lumen — <em>confiança se desenha.</em></h3>
+        <p>Linguagem calma e profissional, prova social em destaque e agendamento direto. Cuidado + competência.</p>
+        <span class="ct-cta">Abrir case <span class="arrow">→</span></span>
       </div>
-    </article>
+    </a>
 
-    <article class="case">
-      <div class="case-media" data-slider>
-        <div class="before">Site antigo, sem conversão<br><span style="font-size:14px;color:var(--paper-dim);font-family:'JetBrains Mono',monospace;display:block;margin-top:8px">— template comum —</span></div>
-        <div class="after">Landing focada em vender<br><span style="font-size:14px;color:var(--orange);font-family:'JetBrains Mono',monospace;display:block;margin-top:8px">— entrega em 7 dias —</span></div>
-        <div class="label l-before">Antes</div>
-        <div class="label l-after">Depois</div>
-        <div class="slider-line" style="background:var(--orange);box-shadow:0 0 12px rgba(255,91,31,.5)"></div>
-        <div class="slider-handle" style="background:var(--orange);color:#fff">⇔</div>
+    <a class="case-teaser" href="cases.html#case-03">
+      <div class="thumb" style="background-image:url('assets/cafe-espaco.jpg')">
+        <span class="thumb-tag">Antes & depois</span>
       </div>
-      <div class="case-content">
-        <span class="num" style="color:var(--orange)">CASE.03 · Landing de conversão</span>
-        <h3>Serviço local</h3>
-        <div class="meta"><span>Setor: Serviços</span><span>Prazo: 7 dias</span></div>
-        <div><span class="lbl">Desafio</span><p class="desafio">Negócio com bom serviço mas site institucional genérico que não gerava contatos.</p></div>
-        <div><span class="lbl">Solução</span><p class="solucao">Landing única, copy direta, prova social acima da dobra e CTA de WhatsApp em todas as seções.</p></div>
-        <div><span class="lbl">Resultado</span><p class="resultado">Multiplicação de contatos qualificados via canal direto.</p></div>
-        <a class="case-cta" data-wa data-msg="Quero uma landing como o case 03.">Quero algo assim →</a>
+      <div class="ct-body">
+        <span class="ct-num">03 / Gastronomia</span>
+        <h3>Café Maranta — <em>do panfleto à experiência.</em></h3>
+        <p>Direção editorial: verde profundo, serifa autoral e respiro. Vende a experiência, não a lista de preços.</p>
+        <span class="ct-cta">Abrir case <span class="arrow">→</span></span>
       </div>
-    </article>
+    </a>
 
+  </div>
+  <div class="cases-allcta">
+    <a class="btn btn-ghost" href="cases.html">Ver todos os cases <span class="arrow">→</span></a>
   </div>
 </section>
 
@@ -760,7 +763,7 @@ footer .right a:hover{color:var(--paper)}
     <a href="https://www.linkedin.com/in/gabriel-mezzetti-7a576937b/" target="_blank" rel="noopener">LinkedIn</a>
     <a href="https://www.behance.net/gabrielmezzetti1" target="_blank" rel="noopener">Behance</a>
     <a data-wa data-msg="Olá pelo rodapé!">WhatsApp</a>
-    <span class="mono">© 2026 · SP · Remoto Brasil</span>
+    <span class="mono">© 2026 · SP · Atendimento remoto em todo o Brasil</span>
   </div>
 </footer>
 
